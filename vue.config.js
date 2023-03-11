@@ -126,9 +126,12 @@ const vueConfig = {
     port: 8000,
     proxy: {
       '/api': {
-        target: 'https://chat.shibonas.cn/gpt',
+        target: 'https://chat.shibonas.cn',
         ws: false,
-        changeOrigin: true
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/gpt/api'
+        }
       }
     },
     historyApiFallback: true,
