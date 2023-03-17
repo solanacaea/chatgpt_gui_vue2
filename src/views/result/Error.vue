@@ -24,9 +24,14 @@
 </template>
 
 <script>
+import Icon from 'ant-design-vue/lib/icon'
+import Button from 'ant-design-vue/lib/button'
+import Card from 'ant-design-vue/lib/card'
+import Result from 'ant-design-vue/lib/result'
 
 export default {
   name: 'Error',
+  components: {Icon, Button, Card, Result},
   computed: {
     result () {
       return {

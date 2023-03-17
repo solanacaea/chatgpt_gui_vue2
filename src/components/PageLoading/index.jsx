@@ -1,4 +1,4 @@
-import { Spin } from 'ant-design-vue'
+import Spin from 'ant-design-vue/lib/spin'
 
 export const PageLoading = {
   name: 'PageLoading',

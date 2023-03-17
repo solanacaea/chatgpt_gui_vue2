@@ -27,14 +27,15 @@ export const constantRouterMap = [
   {
     path: '/chat',
     name: 'chat',
-    component: () => import('@/views/chat/Chat'),
-    children: [
-      {
-        path: '/:conversation',
-        name: 'conversation',
-        component: () => import(/* webpackChunkName: "user" */ '@/views/chat/Conversation')
-      }
-    ]
+    component: () => import(/* webpackChunkName: "user" */ '@/views/chat/Conversation'),
+    // component: () => import('@/views/chat/Chat'),
+    // children: [
+    //   {
+    //     path: '/:conversation',
+    //     name: 'conversation',
+    //     component: () => import(/* webpackChunkName: "user" */ '@/views/chat/Conversation')
+    //   }
+    // ]
   },
   {
     path: '/404',

@@ -123,15 +123,12 @@ const vueConfig = {
 
   devServer: {
     // development server port 8000
-    port: 8000,
+    port: 8001,
     proxy: {
       '/api': {
         target: 'https://chat.shibonas.cn',
         ws: false,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/gpt/api'
-        }
+        changeOrigin: true
       }
     },
     historyApiFallback: true,

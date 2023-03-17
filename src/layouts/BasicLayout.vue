@@ -21,7 +21,7 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-        <img src="@/assets/logo.svg" />
+        <img src="@/assets/xa4.jpeg" />
         <h1>{{ title }}</h1>
       </div>
     </template>
@@ -56,6 +56,8 @@
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
+import Tooltip from 'ant-design-vue/lib/tooltip';
+import Icon from 'ant-design-vue/lib/icon'
 
 import defaultSettings from '@/config/defaultSettings'
 import Ads from '@/components/Other/CarbonAds'
@@ -64,7 +66,9 @@ export default {
   name: 'BasicLayout',
   components: {
     SettingDrawer,
-    Ads
+    Ads,
+    Tooltip,
+    Icon
   },
   data () {
     return {
