@@ -1,16 +1,21 @@
 <template>
-  <a-result status="403" title="403" sub-title="Sorry, you don't have access to this page.">
+  <Result status="403" title="403" sub-title="Sorry, you don't have access to this page.">
     <template #extra>
-      <a-button type="primary" @click="toHome">
+      <Button type="primary" @click="toHome">
         Back Home
-      </a-button>
+      </Button>
     </template>
-  </a-result>
+  </Result>
 </template>
 
 <script>
+import Button from 'ant-design-vue/lib/button'
+import 'ant-design-vue/lib/button/style/css'
+import Result from 'ant-design-vue/lib/result'
+import 'ant-design-vue/lib/result/style/css'
 export default {
   name: 'Exception403',
+  components: { Button, Result },
   methods: {
     toHome () {
       this.$router.push({ path: '/' })

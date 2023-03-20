@@ -1,16 +1,21 @@
 <template>
-  <a-result status="500" title="500" sub-title="Sorry, the server is reporting an error.">
+  <Result status="500" title="500" sub-title="Sorry, the server is reporting an error.">
     <template #extra>
-      <a-button type="primary" @click="toHome">
+      <Button type="primary" @click="toHome">
         Back Home
-      </a-button>
+      </Button>
     </template>
-  </a-result>
+  </Result>
 </template>
 
 <script>
+import Button from 'ant-design-vue/lib/button'
+import 'ant-design-vue/lib/button/style/css'
+import Result from 'ant-design-vue/lib/result'
+import 'ant-design-vue/lib/result/style/css'
   export default {
     name: 'Exception500',
+    components: { Button, Result },
     methods: {
       toHome () {
         this.$router.push({ path: '/' })

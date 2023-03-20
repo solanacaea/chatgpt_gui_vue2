@@ -2,23 +2,23 @@ import Vue from 'vue'
 
 // base library
 import {
-  ConfigProvider,
+  // ConfigProvider,
   // Layout,
-  Input,
+  // Input,
   // InputNumber,
-  Button,
+  // Button,
   // Switch,
   // Radio,
   // Checkbox,
   // Select,
-  Card,
-  Form,
+  // Card,
+  // Form,
   // Row,
   // Col,
   // Modal,
   // Table,
   // Tabs,
-  Icon,
+  // Icon,
   // Badge,
   // Popover,
   // Dropdown,
@@ -57,23 +57,23 @@ import {
 // import PermissionHelper from '@/core/permission/permission'
 import './directives/action'
 
-Vue.use(ConfigProvider)
+// Vue.use(ConfigProvider)
 // Vue.use(Layout)
-Vue.use(Input)
+// Vue.use(Input)
 // Vue.use(InputNumber)
-Vue.use(Button)
+// Vue.use(Button)
 // Vue.use(Switch)
 // Vue.use(Radio)
 // Vue.use(Checkbox)
 // Vue.use(Select)
-Vue.use(Card)
-Vue.use(Form)
+// Vue.use(Card)
+// Vue.use(Form)
 // Vue.use(Row)
 // Vue.use(Col)
 // Vue.use(Modal)
 // Vue.use(Table)
 // Vue.use(Tabs)
-Vue.use(Icon)
+// Vue.use(Icon)
 // Vue.use(Badge)
 // Vue.use(Popover)
 // Vue.use(Dropdown)

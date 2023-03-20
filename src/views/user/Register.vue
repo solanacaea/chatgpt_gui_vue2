@@ -1,17 +1,17 @@
 <template>
   <div class="main user-layout-register">
     <h3><span>{{ $t('user.register.register') }}</span></h3>
-    <a-form ref="formRegister" :form="form" id="formRegister">
-      <a-form-item>
-        <a-input
+    <Form ref="formRegister" :form="form" id="formRegister">
+      <FormItem>
+        <Input
           size="large"
           type="text"
           :placeholder="$t('user.register.email.placeholder')"
           v-decorator="['email', {rules: [{ required: true, type: 'email', message: $t('user.email.required') }], validateTrigger: ['change', 'blur']}]"
-        ></a-input>
-      </a-form-item>
+        ></Input>
+      </FormItem>
 
-      <a-popover
+      <Popover
         placement="rightTop"
         :trigger="['focus']"
         :getPopupContainer="(trigger) => trigger.parentElement"
@@ -19,67 +19,67 @@
         <template slot="content">
           <div :style="{ width: '240px' }" >
             <div :class="['user-register', passwordLevelClass]">{{ $t(passwordLevelName) }}</div>
-            <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
+            <Progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
             <div style="margin-top: 10px;">
               <span>{{ $t('user.register.password.popover-message') }}
               </span>
             </div>
           </div>
         </template>
-        <a-form-item>
-          <a-input-password
+        <FormItem>
+          <Password
             size="large"
             @click="handlePasswordInputClick"
             :placeholder="$t('user.register.password.placeholder')"
             v-decorator="['password', {rules: [{ required: true, message: $t('user.password.required') }, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
-          ></a-input-password>
-        </a-form-item>
-      </a-popover>
+          ></Password>
+        </FormItem>
+      </Popover>
 
-      <a-form-item>
-        <a-input-password
+      <FormItem>
+        <Password
           size="large"
           :placeholder="$t('user.register.confirm-password.placeholder')"
           v-decorator="['password2', {rules: [{ required: true, message: $t('user.password.required') }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
-        ></a-input-password>
-      </a-form-item>
+        ></Password>
+      </FormItem>
 
-      <a-form-item>
-        <a-input size="large" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, message: $t('user.phone-number.required'), pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
-          <a-select slot="addonBefore" size="large" defaultValue="+86">
-            <a-select-option value="+86">+86</a-select-option>
-            <a-select-option value="+87">+87</a-select-option>
-          </a-select>
-        </a-input>
-      </a-form-item>
-      <!--<a-input-group size="large" compact>
-            <a-select style="width: 20%" size="large" defaultValue="+86">
-              <a-select-option value="+86">+86</a-select-option>
-              <a-select-option value="+87">+87</a-select-option>
-            </a-select>
-            <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
-          </a-input-group>-->
+      <FormItem>
+        <Input size="large" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, message: $t('user.phone-number.required'), pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
+          <Select slot="addonBefore" size="large" defaultValue="+86">
+            <Option value="+86">+86</Option>
+            <Option value="+87">+87</Option>
+          </Select>
+        </Input>
+      </FormItem>
+      <!--<Group size="large" compact>
+            <Select style="width: 20%" size="large" defaultValue="+86">
+              <Option value="+86">+86</Option>
+              <Option value="+87">+87</Option>
+            </Select>
+            <Input style="width: 80%" size="large" placeholder="11 位手机号"></Input>
+          </Group>-->
 
-      <a-row :gutter="16">
-        <a-col class="gutter-row" :span="16">
-          <a-form-item>
-            <a-input size="large" type="text" :placeholder="$t('user.login.mobile.verification-code.placeholder')" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
-              <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
-        </a-col>
-        <a-col class="gutter-row" :span="8">
-          <a-button
+      <Row :gutter="16">
+        <Col class="gutter-row" :span="16">
+          <FormItem>
+            <Input size="large" type="text" :placeholder="$t('user.login.mobile.verification-code.placeholder')" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
+              <Icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </Input>
+          </FormItem>
+        </Col>
+        <Col class="gutter-row" :span="8">
+          <Button
             class="getCaptcha"
             size="large"
             :disabled="state.smsSendBtn"
             @click.stop.prevent="getCaptcha"
-            v-text="!state.smsSendBtn && $t('user.register.get-verification-code')||(state.time+' s')"></a-button>
-        </a-col>
-      </a-row>
+            v-text="!state.smsSendBtn && $t('user.register.get-verification-code')||(state.time+' s')"></Button>
+        </Col>
+      </Row>
 
-      <a-form-item>
-        <a-button
+      <FormItem>
+        <Button
           size="large"
           type="primary"
           htmlType="submit"
@@ -87,11 +87,11 @@
           :loading="registerBtn"
           @click.stop.prevent="handleSubmit"
           :disabled="registerBtn">{{ $t('user.register.register') }}
-        </a-button>
+        </Button>
         <router-link class="login" :to="{ name: 'login' }">{{ $t('user.register.sign-in') }}</router-link>
-      </a-form-item>
+      </FormItem>
 
-    </a-form>
+    </Form>
   </div>
 </template>
 
@@ -100,6 +100,30 @@ import { getSmsCaptcha } from '@/api/login'
 import { deviceMixin } from '@/store/device-mixin'
 import { scorePassword } from '@/utils/util'
 
+import Form from 'ant-design-vue/lib/form'
+import 'ant-design-vue/lib/form/style/css'
+import Input from 'ant-design-vue/lib/input'
+import 'ant-design-vue/lib/input/style/css'
+import Button from 'ant-design-vue/lib/button'
+import 'ant-design-vue/lib/button/style/css'
+import Icon from 'ant-design-vue/lib/icon'
+import 'ant-design-vue/lib/icon/style/css'
+import Row from 'ant-design-vue/lib/row'
+import 'ant-design-vue/lib/row/style/css'
+import Col from 'ant-design-vue/lib/col'
+import 'ant-design-vue/lib/col/style/css'
+import Popover from 'ant-design-vue/lib/popover'
+import 'ant-design-vue/lib/popover/style/css'
+import Select from 'ant-design-vue/lib/select'
+import 'ant-design-vue/lib/select/style/css'
+import Progress from 'ant-design-vue/lib/progress'
+import 'ant-design-vue/lib/progress/style/css'
+
+
+const FormItem = Form.Item
+const Password = Input.Password
+const Group = Input.Group
+const Option = Select.Option
 const levelNames = {
   0: 'user.password.strength.short',
   1: 'user.password.strength.low',
@@ -121,6 +145,7 @@ const levelColor = {
 export default {
   name: 'Register',
   components: {
+    Input, Password, Form, FormItem, Button, Row, Col, Icon, Popover, Select, Option, Group, Progress
   },
   mixins: [deviceMixin],
   data () {

@@ -1,15 +1,15 @@
 <template>
   <div class="main">
-    <a-form
+    <Form
       id="formLogin"
       class="user-layout-login"
       ref="formLogin"
       :form="form"
       @submit="handleSubmit"
     >
-      <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误" />
-      <a-form-item>
-        <a-input
+      <Alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误" />
+      <FormItem>
+        <Input
           size="large"
           type="text"
           placeholder="用户名"
@@ -18,12 +18,12 @@
             {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
           ]"
         >
-          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-        </a-input>
-      </a-form-item>
+          <Icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </Input>
+      </FormItem>
 
-      <a-form-item>
-        <a-input-password
+      <FormItem>
+        <Password
           size="large"
           placeholder="密码"
           v-decorator="[
@@ -31,25 +31,25 @@
             {rules: [{ required: true, message: '请输入密码！' }], validateTrigger: 'blur'}
           ]"
         >
-          <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-        </a-input-password>
-      </a-form-item>
+          <Icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </Password>
+      </FormItem>
       
 
-      <a-form-item style="margin-top:24px">
-        <a-button
+      <FormItem style="margin-top:24px">
+        <Button
           size="large"
           type="primary"
           htmlType="submit"
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-        >登录</a-button>
-      </a-form-item>
+        >登录</Button>
+      </FormItem>
 
-    </a-form>
-    <!-- <a-textarea placeholder="临时窗口，调试展示获取企微传递参数query" :rows="1" v-model="question1"></a-textarea> -->
-    <!-- <a-textarea placeholder="临时窗口，调试展示获取企微传递参数params" :rows="1" v-model="question2"></a-textarea> -->
+    </Form>
+    <!-- <Textarea placeholder="临时窗口，调试展示获取企微传递参数query" :rows="1" v-model="question1"></Textarea> -->
+    <!-- <Textarea placeholder="临时窗口，调试展示获取企微传递参数params" :rows="1" v-model="question2"></Textarea> -->
 
   </div>
 </template>
@@ -61,11 +61,25 @@ import { timeFix } from '@/utils/util'
 // import { getSmsCaptcha, get2step } from '@/api/login'
 import router from '../../router'
 
+import Form from 'ant-design-vue/lib/form'
+import 'ant-design-vue/lib/form/style/css'
+import Button from 'ant-design-vue/lib/button'
+import 'ant-design-vue/lib/button/style/css'
+import Icon from 'ant-design-vue/lib/icon'
+import 'ant-design-vue/lib/icon/style/css'
+import Alert from 'ant-design-vue/lib/alert'
+import 'ant-design-vue/lib/alert/style/css'
+import Input from 'ant-design-vue/lib/input'
+import 'ant-design-vue/lib/input/style/css'
 
+const FormItem = Form.Item
+const Password = Input.Password
+const Textarea = Input.Textarea
 export default {
-  // components: {
+  components: {
     // TwoStepCaptcha
-  // },
+    Form, FormItem, Button, Icon, Password, Input, Alert, Textarea
+  },
   data () {
     return {
       question1: this.$route.query.query1,

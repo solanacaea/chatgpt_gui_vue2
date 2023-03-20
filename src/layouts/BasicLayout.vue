@@ -56,8 +56,6 @@
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
-import Tooltip from 'ant-design-vue/lib/tooltip';
-import Icon from 'ant-design-vue/lib/icon'
 
 import defaultSettings from '@/config/defaultSettings'
 import Ads from '@/components/Other/CarbonAds'
@@ -66,9 +64,7 @@ export default {
   name: 'BasicLayout',
   components: {
     SettingDrawer,
-    Ads,
-    Tooltip,
-    Icon
+    Ads
   },
   data () {
     return {

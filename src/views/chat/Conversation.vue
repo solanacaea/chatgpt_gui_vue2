@@ -1,12 +1,23 @@
 <script>
 import request from '@/utils/request'
 
+import Button from 'ant-design-vue/lib/button'
+import 'ant-design-vue/lib/button/style/css'
+import Card from 'ant-design-vue/lib/card'
+import 'ant-design-vue/lib/card/style/css'
+import Input from 'ant-design-vue/lib/input'
+import 'ant-design-vue/lib/input/style/css'
+
+const TextArea = Input.TextArea
+
 const questions = []
 
 export default {
+    components: { Button, Card, TextArea },
     data () {
         return {
-            questions: [{question: '', reply: "Hi~我是小安，很高兴为您服务，有问题尽管问我吧～", isLoading: false}],  //[ {question:,msgId:,reply:,isLoading:}]
+            questions: [{question: '', reply: "Hi~我是小安，很高兴为您服务，有问题尽管问我吧～", isLoading: false},
+            {question: '我的问题是111', isLoading: false}],  //[ {question:,msgId:,reply:,isLoading:}]
             question: '',
             dis: false
         }
@@ -21,6 +32,7 @@ export default {
             })
         },
         sendQuestion () {
+          console.log(222);
             if (this.question.trim() == '') {
               this.question = ''
               return
@@ -53,14 +65,14 @@ export default {
                 console.log(result)
                 this.questions.forEach((item)=>{
                   if(item.msgId==result.msgId){
-                      const answer = result.message.replace('\n\n', '');
-                      item.reply = answer.replace(/\n\n/g, '<br/>');
+                      const answer1 = result.message.replace('\n\n', '');
+                      //const answer2 = answer1.replace(/\n\n/g, '<br/>');
+                      item.reply = answer1.replace(/\n/g, '<br/>');
                       item.isLoading = false;
                       setTimeout(()=>{
                         this.fScrollBottom();
                       },0)
                       
-
                       return;
                   }
                 })
@@ -81,6 +93,9 @@ export default {
             arr = arr.replace(/,/g, "");
             return arr;
         },
+        getQuestion(q) {
+          this.question = q;
+        },
     }
 }
 </script>
@@ -91,20 +106,20 @@ export default {
       <div id="dialog-zone" style="flex-grow: 1; overflow-y: auto;">
         <div :key="index" v-for="(q, index) in questions">
           <!-- Question -->
-          <a-card v-if="q.question" class="shadow">
+          <Card v-if="q.question" class="shadow">
             <div>
               <div style="display: flex;">
                 <span class="ant-avatar">
-                  <img src="~@/assets/anonym.png">
+                  <img src="~@/assets/anonym1.png">
                 </span>
                 <div class="mx-3 my-auto">我</div>
               </div>
-              <div class="my-3 message">{{ q.question }}</div>
+              <div @click="getQuestion(q.question)" class="my-3 message">{{ q.question }}</div>
             </div>
-          </a-card>
+          </Card>
 
           <!-- Reply -->
-          <a-card class="shadow my-3 answer-zone">
+          <Card class="shadow my-3 answer-zone">
             <div>
               <div style="display: flex;">
                 <span class="ant-avatar">
@@ -117,16 +132,16 @@ export default {
               <!-- <div v-else class="my-3 message" >{{q.reply}}</div> -->
 
             </div>
-          </a-card>
+          </Card>
 
         </div>
 
       </div>
       <div style="display: flex">
-        <a-textarea placeholder="提问内容" :rows="3" v-model="question"></a-textarea>
-        <a-button class="my-btn" v-bind:disable="dis" type="primary" @click="sendQuestion">
+        <TextArea placeholder="提问内容" :rows="2" v-model="question"></TextArea>
+        <Button class="my-btn" v-bind:disable="dis" type="primary" @click="sendQuestion">
           发送
-        </a-button>
+        </Button>
       </div>
     </div>
   </div>
@@ -135,7 +150,7 @@ export default {
 <style scoped>
 
 .my-btn {
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 8px;
 }
 .answer-zone{
@@ -189,7 +204,7 @@ export default {
     width: 32px;
     height: 32px;
     line-height: 32px;
-    border-radius: 50%;
+    border-radius: 20%;
 }
 
 </style>
