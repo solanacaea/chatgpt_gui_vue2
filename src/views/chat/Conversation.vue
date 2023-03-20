@@ -17,7 +17,8 @@ export default {
     data () {
         return {
             questions: [{question: '', reply: "Hi~我是小安，很高兴为您服务，有问题尽管问我吧～", isLoading: false},
-            {question: '我的问题是111', isLoading: false}],  //[ {question:,msgId:,reply:,isLoading:}]
+            // {question: '我的问题是111', isLoading: false}
+            ],  //[ {question:,msgId:,reply:,isLoading:}]
             question: '',
             dis: false
         }
