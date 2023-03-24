@@ -82,8 +82,8 @@ export default {
   },
   data () {
     return {
-      question1: this.$route.query.query1,
-      question2: this.$route.params.param1,
+      // question1: this.$route.query.query1,
+      // question2: this.$route.params.param1,
       customActiveKey: 'tab1',
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone

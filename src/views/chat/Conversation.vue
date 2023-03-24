@@ -11,7 +11,7 @@ import 'ant-design-vue/lib/input/style/css'
 const TextArea = Input.TextArea
 
 const questions = []
-
+const sendBtnDisable = false
 export default {
     components: { Button, Card, TextArea },
     data () {
@@ -20,12 +20,12 @@ export default {
             // {question: '我的问题是111', isLoading: false}
             ],  //[ {question:,msgId:,reply:,isLoading:}]
             question: '',
-            dis: false
+            sendBtnDisable: false
         }
     },
     methods: {
         ask(parameter) {
-          console.log("send param: " + JSON.stringify(parameter))
+          // console.log("send param: " + JSON.stringify(parameter))
             return request({
                 url: '/ask',
                 method: 'post',
@@ -33,11 +33,12 @@ export default {
             })
         },
         sendQuestion () {
-          console.log(222);
             if (this.question.trim() == '') {
               this.question = ''
               return
             }
+
+            this.sendBtnDisable = true;
             var msgId = this.fCreaetGuid();
             var conversationId = this.fCreaetGuid();
             this.questions.push({
@@ -46,11 +47,10 @@ export default {
                     isLoading:true,
                     reply: '请求中，请稍后...'
                 })
-            this.dis = true
             this.question4server = this.question
             this.question = ''
             // div.scrollTop = div.scrollHeight
-            
+
             this.askParam = { 
               question: this.question4server, 
               msgId: msgId, 
@@ -63,7 +63,6 @@ export default {
             this.ask(this.askParam).then((result) => { 
                 // const last = this.questions[this.questions.length - 1]
                 // last.reply = result.message
-                console.log(result)
                 this.questions.forEach((item)=>{
                   if(item.msgId==result.msgId){
                       const answer1 = result.message.replace('\n\n', '');
@@ -77,10 +76,19 @@ export default {
                       return;
                   }
                 })
+                this.sendBtnDisable = false
+            }).catch(error => {
+              this.questions.forEach((item)=>{
+                  if(item.msgId==this.askParam.msgId){
+                    item.reply = "暂时无法回答，请稍后再试。";
+                    item.isLoading = false;
+                  }
+              })
+              this.sendBtnDisable = false
             })
         },
         fScrollBottom:function(){
-          console.log("scrollHeight",document.getElementById("dialog-zone").scrollHeight);
+          // console.log("scrollHeight",document.getElementById("dialog-zone").scrollHeight);
           document.getElementById("dialog-zone").scrollTo(0,document.getElementById("dialog-zone").scrollHeight);
         },
          //表示全局唯一标识符 (GUID)。
@@ -140,7 +148,7 @@ export default {
       </div>
       <div style="display: flex">
         <TextArea placeholder="提问内容" :rows="2" v-model="question"></TextArea>
-        <Button class="my-btn" v-bind:disable="dis" type="primary" @click="sendQuestion">
+        <Button class="my-btn" v-bind:disabled="sendBtnDisable" type="primary" @click="sendQuestion">
           发送
         </Button>
       </div>
