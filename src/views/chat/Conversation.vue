@@ -187,9 +187,9 @@ export default {
               </div>
               <div v-if="q.isLoading"><img class="loading-img" src="https://m.stg.pingan.com/static/ai/robot/webapp-static/images/loading.gif" alt=""></div>
               <div v-else class="my-3 message">
-                <vue-typed-js :strings="q.reply" :contentType="'html'">
+                <VueTypedJs :strings="q.reply" :contentType="'html'" >
                   <h2 class="typing"></h2>
-                </vue-typed-js>
+                </VueTypedJs>
               </div>
               <!-- <div v-else class="my-3 message" >{{q.reply}}</div> -->
             </div>
