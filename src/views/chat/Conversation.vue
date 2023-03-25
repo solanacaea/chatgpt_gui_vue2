@@ -8,6 +8,7 @@ import 'ant-design-vue/lib/card/style/css'
 import Input from 'ant-design-vue/lib/input'
 import 'ant-design-vue/lib/input/style/css'
 import Checkbox from 'ant-design-vue/lib/checkbox'
+import { VueTypedJs } from 'vue-typed-js'
 
 const TextArea = Input.TextArea
 
@@ -108,7 +109,7 @@ export default {
             this.ask(this.askParam).then((result) => { 
                 // const last = this.questions[this.questions.length - 1]
                 // last.reply = result.message
-                this.questions.forEach((item)=>{
+                this.questions.forEach((item, index)=>{
                   if(item.msgId==result.msgId){
                       const answer1 = result.message.replace('\n\n', '');
                       //const answer2 = answer1.replace(/\n\n/g, '<br/>');
@@ -116,13 +117,15 @@ export default {
                       item.isLoading = false;
                       setTimeout(()=>{
                         this.fScrollBottom();
-                      },0)
-                      
+                      }, 0)
+                      // this.showAnswer(reply, index)
+                      // item.reply = reply
                       return;
                   }
                 })
                 this.sendBtnDisable = false
             }).catch(error => {
+              console.log(error)
               this.questions.forEach((item)=>{
                   if(item.msgId==this.askParam.msgId){
                     item.reply = "暂时无法回答，请稍后再试。";
@@ -150,6 +153,7 @@ export default {
         getQuestion(q) {
           this.question = q;
         },
+        
     }
 }
 </script>
@@ -182,9 +186,12 @@ export default {
                 <div class="mx-3 my-auto">小安</div>
               </div>
               <div v-if="q.isLoading"><img class="loading-img" src="https://m.stg.pingan.com/static/ai/robot/webapp-static/images/loading.gif" alt=""></div>
-              <div v-else class="my-3 message"  v-html= "q.reply"> </div>
+              <div v-else class="my-3 message">
+                <vue-typed-js :strings="q.reply" :contentType="'html'">
+                  <h2 class="typing"></h2>
+                </vue-typed-js>
+              </div>
               <!-- <div v-else class="my-3 message" >{{q.reply}}</div> -->
-
             </div>
           </Card>
 
