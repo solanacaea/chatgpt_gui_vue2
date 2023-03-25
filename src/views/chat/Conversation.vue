@@ -20,7 +20,9 @@ export default {
             // {question: '我的问题是111', isLoading: false}
             ],  //[ {question:,msgId:,reply:,isLoading:}]
             question: '',
-            sendBtnDisable: false
+            sendBtnDisable: false,
+            conversationId: this.fCreaetGuid(),
+            maxContextLength: 300
         }
     },
     methods: {
@@ -40,7 +42,7 @@ export default {
 
             this.sendBtnDisable = true;
             var msgId = this.fCreaetGuid();
-            var conversationId = this.fCreaetGuid();
+            // var conversationId = this.fCreaetGuid();
             this.questions.push({
                     question: this.question,
                     msgId:msgId,
@@ -50,13 +52,46 @@ export default {
             this.question4server = this.question
             this.question = ''
             // div.scrollTop = div.scrollHeight
+            
+            if (this.questions.length > 5) {
+              this.startPos = this.questions.length - 5
+              this.last5 = this.questions.slice(this.startPos)
+            } else {
+              this.last5 = this.questions
+            }
+            
+            this.q_context = []
+            this.last5.forEach((item, index)=>{
+              if (item.question != '' & item.reply != '请求中，请稍后...') {
+                if (item.question.length > this.maxContextLength) {
+                  this.lastReq = item.question.slice(0, this.maxContextLength)
+                } else {
+                  this.lastReq = item.question
+                }
+                if (item.reply.length > this.maxContextLength) {
+                  this.lastResp = item.reply.slice(0, this.maxContextLength)
+                } else {
+                  this.lastResp = item.reply
+                }
+
+                this.q_context.push({
+                  role: "user",
+                  content: this.lastReq
+                }, {
+                  role: "assistant",
+                  content: this.lastResp
+                })
+              }
+            })
 
             this.askParam = { 
               question: this.question4server, 
               msgId: msgId, 
-              conversationId: conversationId 
+              conversationId: this.conversationId,
+              questionType: 'chatWithContext',
+              context: this.q_context
             }
-
+            console.log(this.askParam)
             setTimeout(()=>{
               this.fScrollBottom();
             },0)
