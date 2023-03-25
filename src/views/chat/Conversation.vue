@@ -7,13 +7,14 @@ import Card from 'ant-design-vue/lib/card'
 import 'ant-design-vue/lib/card/style/css'
 import Input from 'ant-design-vue/lib/input'
 import 'ant-design-vue/lib/input/style/css'
+import Checkbox from 'ant-design-vue/lib/checkbox'
 
 const TextArea = Input.TextArea
 
 const questions = []
 const sendBtnDisable = false
 export default {
-    components: { Button, Card, TextArea },
+    components: { Button, Card, TextArea, Checkbox },
     data () {
         return {
             questions: [{question: '', reply: "Hi~我是小安，很高兴为您服务，有问题尽管问我吧～", isLoading: false},
@@ -22,7 +23,8 @@ export default {
             question: '',
             sendBtnDisable: false,
             conversationId: this.fCreaetGuid(),
-            maxContextLength: 300
+            maxContextLength: 300,
+            enableContext: false
         }
     },
     methods: {
@@ -61,36 +63,44 @@ export default {
             }
             
             this.q_context = []
-            this.last5.forEach((item, index)=>{
-              if (item.question != '' & item.reply != '请求中，请稍后...') {
-                if (item.question.length > this.maxContextLength) {
-                  this.lastReq = item.question.slice(0, this.maxContextLength)
-                } else {
-                  this.lastReq = item.question
-                }
-                if (item.reply.length > this.maxContextLength) {
-                  this.lastResp = item.reply.slice(0, this.maxContextLength)
-                } else {
-                  this.lastResp = item.reply
-                }
+            if (this.enableContext) {
+              this.last5.forEach((item, index)=>{
+                if (item.question != '' & item.reply != '请求中，请稍后...') {
+                  if (item.question.length > this.maxContextLength) {
+                    this.lastReq = item.question.slice(0, this.maxContextLength)
+                  } else {
+                    this.lastReq = item.question
+                  }
+                  if (item.reply.length > this.maxContextLength) {
+                    this.lastResp = item.reply.slice(0, this.maxContextLength)
+                  } else {
+                    this.lastResp = item.reply
+                  }
 
-                this.q_context.push({
-                  role: "user",
-                  content: this.lastReq
-                }, {
-                  role: "assistant",
-                  content: this.lastResp
-                })
+                  this.q_context.push({
+                    role: "user",
+                    content: this.lastReq
+                  }, {
+                    role: "assistant",
+                    content: this.lastResp
+                  })
+                }
+              })
+              this.askParam = { 
+                question: this.question4server, 
+                msgId: msgId, 
+                conversationId: this.conversationId,
+                questionType: 'chatWithContext',
+                context: this.q_context
               }
-            })
-
-            this.askParam = { 
-              question: this.question4server, 
-              msgId: msgId, 
-              conversationId: this.conversationId,
-              questionType: 'chatWithContext',
-              context: this.q_context
+            } else {
+              this.askParam = { 
+                question: this.question4server, 
+                msgId: msgId, 
+                conversationId: this.conversationId
+              }
             }
+            
             console.log(this.askParam)
             setTimeout(()=>{
               this.fScrollBottom();
@@ -181,6 +191,11 @@ export default {
         </div>
 
       </div>
+      <div>
+        <Checkbox class="my-ckb" v-model="enableContext">
+          开启上下文语境
+        </Checkbox>
+      </div>
       <div style="display: flex">
         <TextArea placeholder="提问内容" :rows="2" v-model="question"></TextArea>
         <Button class="my-btn" v-bind:disabled="sendBtnDisable" type="primary" @click="sendQuestion">
@@ -192,6 +207,11 @@ export default {
 </template>
 
 <style scoped>
+
+.my-ckb {
+    margin-bottom: 3px;
+    margin-left: 3px;
+}
 
 .my-btn {
     margin-top: 10px;

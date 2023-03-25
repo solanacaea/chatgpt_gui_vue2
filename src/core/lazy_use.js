@@ -9,7 +9,7 @@ import {
   // Button,
   // Switch,
   // Radio,
-  // Checkbox,
+  Checkbox,
   // Select,
   // Card,
   // Form,
@@ -64,7 +64,7 @@ import './directives/action'
 // Vue.use(Button)
 // Vue.use(Switch)
 // Vue.use(Radio)
-// Vue.use(Checkbox)
+Vue.use(Checkbox)
 // Vue.use(Select)
 // Vue.use(Card)
 // Vue.use(Form)
