@@ -56,8 +56,8 @@ import {
 // import PageLoading from '@/components/PageLoading'
 // import PermissionHelper from '@/core/permission/permission'
 import './directives/action'
-import { VueTypedJs } from 'vue-typed-js'
-Vue.use(VueTypedJs)
+// import { VueTypedJs } from 'vue-typed-js'
+// Vue.use(VueTypedJs)
 
 // Vue.use(ConfigProvider)
 // Vue.use(Layout)

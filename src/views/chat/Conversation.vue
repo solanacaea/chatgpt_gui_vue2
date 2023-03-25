@@ -8,7 +8,7 @@ import 'ant-design-vue/lib/card/style/css'
 import Input from 'ant-design-vue/lib/input'
 import 'ant-design-vue/lib/input/style/css'
 import Checkbox from 'ant-design-vue/lib/checkbox'
-import { VueTypedJs } from 'vue-typed-js'
+// import { VueTypedJs } from 'vue-typed-js'
 
 const TextArea = Input.TextArea
 
@@ -186,11 +186,12 @@ export default {
                 <div class="mx-3 my-auto">小安</div>
               </div>
               <div v-if="q.isLoading"><img class="loading-img" src="https://m.stg.pingan.com/static/ai/robot/webapp-static/images/loading.gif" alt=""></div>
-              <div v-else class="my-3 message">
+              <div v-else class="my-3 message" v-html="q.reply"></div>
+              <!-- <div v-else class="my-3 message">
                 <VueTypedJs :strings="q.reply" :contentType="'html'" >
                   <h2 class="typing"></h2>
                 </VueTypedJs>
-              </div>
+              </div> -->
               <!-- <div v-else class="my-3 message" >{{q.reply}}</div> -->
             </div>
           </Card>
