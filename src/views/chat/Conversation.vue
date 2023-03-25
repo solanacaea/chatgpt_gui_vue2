@@ -209,6 +209,7 @@ export default {
 <style scoped>
 
 .my-ckb {
+    margin-top: 3px;
     margin-bottom: 3px;
     margin-left: 3px;
 }
