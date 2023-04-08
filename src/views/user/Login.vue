@@ -7,7 +7,7 @@
       :form="form"
       @submit="handleSubmit"
     >
-      <Alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误" />
+      <Alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" :message="alertMsg" />
       <FormItem>
         <Input
           size="large"
@@ -80,6 +80,8 @@ import Alert from 'ant-design-vue/lib/alert'
 import 'ant-design-vue/lib/alert/style/css'
 import Input from 'ant-design-vue/lib/input'
 import 'ant-design-vue/lib/input/style/css'
+import { ACCESS_TOKEN, ACCESS_TOKEN_USER, ACCESS_TOKEN_TEMP } from '@/store/mutation-types'
+import storage from 'store'
 
 const FormItem = Form.Item
 const Password = Input.Password
@@ -93,6 +95,7 @@ export default {
     return {
       // question1: this.$route.query.query1,
       // question2: this.$route.params.param1,
+      alertMsg: "账户或密码错误", 
       customActiveKey: 'tab1',
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
@@ -212,9 +215,16 @@ export default {
         this.stepCaptchaVisible = false
       })
     },
-    loginSuccess (res, param) {
+    loginSuccess (res, params) {
+      storage.set(ACCESS_TOKEN_USER, params.username)
       if (res.message === 'expired') {
-        this.$router.push({ path: '/change', query: { username: param.username } })
+        // param: { username: params.username }
+        storage.set(ACCESS_TOKEN_TEMP, `${res.tokenType} ${res.accessToken}`, new Date().getTime() + 24 * 60 * 60 * 1000)
+        this.$router.push({ path: '/change' })
+        return
+      } else if (res.message == 'moss_expired') {
+        this.alertMsg = 'Moss账号已停用'
+        this.isLoginError = true
         return
       }
       this.$router.push({ path: '/chat' })

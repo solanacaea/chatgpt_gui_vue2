@@ -26,7 +26,9 @@
             <Button size="large" type="primary" htmlType="submit" class="login-button" :loading="registerBtn"
                 @click.stop.prevent="handleSubmit" :disabled="registerBtn">修改
             </Button>
+            <br/>
             <router-link class="login" :to="{ name: 'login' }">返回登录</router-link>
+            <br/>
             <router-link class="login" :to="{ name: 'chat' }">返回会话</router-link>
 
         </FormItem>
@@ -57,7 +59,7 @@ import Progress from 'ant-design-vue/lib/progress'
 import 'ant-design-vue/lib/progress/style/css'
 import Alert from 'ant-design-vue/lib/alert'
 import 'ant-design-vue/lib/alert/style/css'
-import { ACCESS_TOKEN, ACCESS_TOKEN_USER } from '@/store/mutation-types'
+import { ACCESS_TOKEN, ACCESS_TOKEN_USER, ACCESS_TOKEN_TEMP } from '@/store/mutation-types'
 import storage from 'store'
 
 const FormItem = Form.Item
@@ -89,11 +91,15 @@ export default {
     },
     mixins: [deviceMixin],
     data() {
+        let tokenUser = storage.get(ACCESS_TOKEN_USER)
+        if (tokenUser == undefined) {
+            tokenUser = this.$route.query.username
+        }
         return {
             usernameDisable: true,
             errorMsg: '',
             // username: this.$route.query.username,
-            username: storage.get(ACCESS_TOKEN_USER),
+            username: tokenUser,
             pwd1: '',
             pwd2: '',
             isLoginError: false,
@@ -196,6 +202,7 @@ export default {
                     }
                     this.isLoginError = false
                     state.passwordLevelChecked = false
+                    storage.set(ACCESS_TOKEN, storage.get(ACCESS_TOKEN_TEMP))
                     change({
                         username: this.username, password: this.pwd1
                     }).then((res) => this.changeSuccess(res, this.username))

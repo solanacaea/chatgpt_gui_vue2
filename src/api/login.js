@@ -3,7 +3,7 @@ import request from '@/utils/request'
 const userApi = {
   Login: '/auth/signin',
   Logout: '/auth/logout',
-  Change: '/auth/change',
+  Change: '/auth/change2',
   ForgePassword: '/auth/forge-password',
   Register: '/auth/register',
   twoStepCode: '/auth/2step-code',
