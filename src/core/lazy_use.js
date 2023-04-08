@@ -9,7 +9,7 @@ import {
   // Button,
   // Switch,
   // Radio,
-  Checkbox,
+  // Checkbox,
   // Select,
   // Card,
   // Form,
@@ -45,7 +45,7 @@ import {
   // Descriptions,
   // Space,
   // message,
-  // notification
+  notification
 } from 'ant-design-vue'
 // import Viser from 'viser-vue'
 
@@ -56,8 +56,8 @@ import {
 // import PageLoading from '@/components/PageLoading'
 // import PermissionHelper from '@/core/permission/permission'
 import './directives/action'
-// import { VueTypedJs } from 'vue-typed-js'
-// Vue.use(VueTypedJs)
+import VueTypedJs from 'vue-typed-js'
+Vue.use(VueTypedJs)
 
 // Vue.use(ConfigProvider)
 // Vue.use(Layout)
@@ -66,7 +66,7 @@ import './directives/action'
 // Vue.use(Button)
 // Vue.use(Switch)
 // Vue.use(Radio)
-Vue.use(Checkbox)
+// Vue.use(Checkbox)
 // Vue.use(Select)
 // Vue.use(Card)
 // Vue.use(Form)
@@ -104,7 +104,7 @@ Vue.use(Checkbox)
 
 // Vue.prototype.$confirm = Modal.confirm
 // Vue.prototype.$message = message
-// Vue.prototype.$notification = notification
+Vue.prototype.$notification = notification
 // Vue.prototype.$info = Modal.info
 // Vue.prototype.$success = Modal.success
 // Vue.prototype.$error = Modal.error

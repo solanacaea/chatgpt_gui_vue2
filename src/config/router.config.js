@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserLayout } from '@/layouts'
+import { UserLayout, ChangeLayout } from '@/layouts'
 
 /**
  * 基础路由
@@ -21,6 +21,11 @@ export const constantRouterMap = [
         path: 'register',
         name: 'register',
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
+      },
+      {
+        path: '/change',
+        name: 'change',
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/Change')
       }
     ]
   },
@@ -41,4 +46,17 @@ export const constantRouterMap = [
     path: '/404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')
   }
+  // {
+  //   path: '/change',
+  //   component: ChangeLayout,
+  //   name: 'change',
+  //   // component: () => import(/* webpackChunkName: "user" */ '@/views/user/Change')
+  //   children: [
+  //     {
+  //       path: 'change',
+  //       name: 'change',
+  //       component: () => import(/* webpackChunkName: "user" */ '@/views/user/Change')
+  //     }
+  //   ]
+  // }
 ]

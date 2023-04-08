@@ -21,7 +21,6 @@
           <Icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </Input>
       </FormItem>
-
       <FormItem>
         <Password
           size="large"
@@ -34,8 +33,6 @@
           <Icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </Password>
       </FormItem>
-      
-
       <FormItem style="margin-top:24px">
         <Button
           size="large"
@@ -45,9 +42,21 @@
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
         >登录</Button>
+        <!-- <router-link class="login-button" :to="{ name: 'change' }">修改密码</router-link> -->
       </FormItem>
-
+      <!-- <FormItem style="margin-top:24px">
+        <router-link class="login-button" :to="{ name: 'change' }">修改密码</router-link>
+      </FormItem> -->
     </Form>
+    <div style="display: flex; color: red;">
+      <div>
+        &emsp; Moss账号已停用，请尝试使用专属账号登录 <br/>
+        &emsp;&emsp; - 账号：姓名拼音或者UM拼音部分，不区分大小写<br/>
+        &emsp;&emsp; - 初始密码：123456 <br/>
+        &emsp; 首次登录会强制修改密码，修改后可正常使用。 <br/>
+        &emsp; 若未开通，请联系管理员申请专属账号。
+      </div>
+    </div>
     <!-- <Textarea placeholder="临时窗口，调试展示获取企微传递参数query" :rows="1" v-model="question1"></Textarea> -->
     <!-- <Textarea placeholder="临时窗口，调试展示获取企微传递参数params" :rows="1" v-model="question2"></Textarea> -->
 
@@ -142,13 +151,13 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
+          // console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = values.password
           Login(loginParams)
-            .then((res) => this.loginSuccess(res))
+            .then((res) => this.loginSuccess(res, loginParams))
             .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
@@ -203,7 +212,11 @@ export default {
         this.stepCaptchaVisible = false
       })
     },
-    loginSuccess (res) {
+    loginSuccess (res, param) {
+      if (res.message === 'expired') {
+        this.$router.push({ path: '/change', query: { username: param.username } })
+        return
+      }
       this.$router.push({ path: '/chat' })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
@@ -216,11 +229,11 @@ export default {
     },
     requestFailed (err) {
       this.isLoginError = true
-      this.$notification.error({
-        message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-        duration: 4
-      })
+      // this.$notification.error({
+      //   message: '错误',
+      //   description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+      //   duration: 4
+      // })
     }
   }
 }

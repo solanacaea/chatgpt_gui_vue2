@@ -1,7 +1,7 @@
 import storage from 'store'
 import expirePlugin from 'store/plugins/expire'
 import { login, getInfo, logout } from '@/api/login'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, ACCESS_TOKEN_USER } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
 storage.addPlugin(expirePlugin)
@@ -39,9 +39,16 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          storage.set(ACCESS_TOKEN, `${response.tokenType} ${response.accessToken}`, new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', `${response.tokenType} ${response.accessToken}`)
-          resolve()
+          // console.log('response', response)
+          if (response.message === 'expired') {
+            resolve(response)
+          } else {
+            // token时效24小时
+            storage.set(ACCESS_TOKEN, `${response.tokenType} ${response.accessToken}`, new Date().getTime() + 24 * 60 * 60 * 1000)
+            storage.set(ACCESS_TOKEN_USER, userInfo.username)
+            commit('SET_TOKEN', `${response.tokenType} ${response.accessToken}`)
+            resolve(response)
+          }
         }).catch(error => {
           reject(error)
         })

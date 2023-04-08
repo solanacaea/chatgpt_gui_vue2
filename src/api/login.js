@@ -3,6 +3,7 @@ import request from '@/utils/request'
 const userApi = {
   Login: '/auth/signin',
   Logout: '/auth/logout',
+  Change: '/auth/change',
   ForgePassword: '/auth/forge-password',
   Register: '/auth/register',
   twoStepCode: '/auth/2step-code',
@@ -29,6 +30,14 @@ const userApi = {
 export function login (parameter) {
   return request({
     url: userApi.Login,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function change (parameter) {
+  return request({
+    url: userApi.Change,
     method: 'post',
     data: parameter
   })

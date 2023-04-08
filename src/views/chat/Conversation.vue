@@ -1,6 +1,6 @@
 <script>
+import Vue from 'vue'
 import request from '@/utils/request'
-
 import Button from 'ant-design-vue/lib/button'
 import 'ant-design-vue/lib/button/style/css'
 import Card from 'ant-design-vue/lib/card'
@@ -8,17 +8,15 @@ import 'ant-design-vue/lib/card/style/css'
 import Input from 'ant-design-vue/lib/input'
 import 'ant-design-vue/lib/input/style/css'
 import Checkbox from 'ant-design-vue/lib/checkbox'
-// import { VueTypedJs } from 'vue-typed-js'
 
 const TextArea = Input.TextArea
-
 const questions = []
 const sendBtnDisable = false
 export default {
     components: { Button, Card, TextArea, Checkbox },
     data () {
         return {
-            questions: [{question: '', reply: "Hi~我是小安，很高兴为您服务，有问题尽管问我吧～", isLoading: false},
+            questions: [{question: '', reply: 'Hi~我是小安，很高兴为您服务，有问题尽管问我吧～', isLoading: false},
             // {question: '我的问题是111', isLoading: false}
             ],  //[ {question:,msgId:,reply:,isLoading:}]
             question: '',
@@ -45,13 +43,19 @@ export default {
 
             this.sendBtnDisable = true;
             var msgId = this.fCreaetGuid();
+            if (this.currItem) {
+              this.currItem.status = 'over'
+            }
+
             // var conversationId = this.fCreaetGuid();
-            this.questions.push({
+            this.currItem = {
                     question: this.question,
-                    msgId:msgId,
-                    isLoading:true,
-                    reply: '请求中，请稍后...'
-                })
+                    msgId: msgId,
+                    isLoading: true,
+                    reply: '',
+                    status: 'loading'
+                }
+            this.questions.push(this.currItem)
             this.question4server = this.question
             this.question = ''
             // div.scrollTop = div.scrollHeight
@@ -110,26 +114,42 @@ export default {
                 // const last = this.questions[this.questions.length - 1]
                 // last.reply = result.message
                 this.questions.forEach((item, index)=>{
-                  if(item.msgId==result.msgId){
+                  if(item.msgId==result.msgId) {
+                    console.log("result: " + result.message)
                       const answer1 = result.message.replace('\n\n', '');
                       //const answer2 = answer1.replace(/\n\n/g, '<br/>');
-                      item.reply = answer1.replace(/\n/g, '<br/>');
+                      var reply = answer1.replace(/\n/g, '<br/>');
+                      // var replyArr = answer1.split('\n')
+                      // console.log(replyArr)
+                      // console.log("replyArr=" + replyArr)
                       item.isLoading = false;
+                      item.status = "generating"
                       setTimeout(()=>{
                         this.fScrollBottom();
                       }, 0)
-                      // this.showAnswer(reply, index)
-                      // item.reply = reply
+                      item.reply = reply
+                      // startShow()
+                      // replyArr.forEach((splitAnswer)=>{
+                      //   console.log("splitAnswer=" + splitAnswer)
+                      //   for (const i in splitAnswer) {
+                      //     console.log("i=" + i)
+                      //     setInterval(function(){
+                      //       item.reply += i
+                      //     }, 1000)
+                      //   }
+                      // })
+                      // item.status = "done"
                       return;
                   }
                 })
-                this.sendBtnDisable = false
+                // this.sendBtnDisable = false
             }).catch(error => {
               console.log(error)
               this.questions.forEach((item)=>{
                   if(item.msgId==this.askParam.msgId){
                     item.reply = "暂时无法回答，请稍后再试。";
                     item.isLoading = false;
+                    item.status = "completed"
                   }
               })
               this.sendBtnDisable = false
@@ -153,7 +173,15 @@ export default {
         getQuestion(q) {
           this.question = q;
         },
-        
+        doShowComplete() {
+          this.sendBtnDisable = false
+          if (this.currItem) {
+            this.currItem.status = "completed"
+          }
+        },
+        stopGenerating() {
+          
+        },
     }
 }
 </script>
@@ -188,16 +216,23 @@ export default {
               <div v-if="q.isLoading"><img class="loading-img" src="https://m.stg.pingan.com/static/ai/robot/webapp-static/images/loading.gif" alt=""></div>
               <div v-else class="my-3 message" v-html="q.reply"></div>
               <!-- <div v-else class="my-3 message">
-                <VueTypedJs :strings="q.reply" :contentType="'html'" >
-                  <h2 class="typing"></h2>
-                </VueTypedJs>
+                <vue-typed-js :strings="q.reply" :contentType="'html'" 
+                    :loop="false" :type-speed="30" :startDelay="10"
+                    :showCursor="true" :cursorChar="'_'" :bindInputFocusEvents="true"
+                    @onComplete="doShowComplete()">
+                  <div class="typing"></div>
+                </vue-typed-js>
               </div> -->
               <!-- <div v-else class="my-3 message" >{{q.reply}}</div> -->
+              <!-- <div v-if="q.status == 'generating'" @click="stopGenerating(q.question)">停止生成</div>
+              <div v-else-if="q.status == 'completed'">重新生成</div> -->
             </div>
           </Card>
-
         </div>
 
+      </div>
+      <div>
+        <router-link :to="{ name: 'change' }">修改密码</router-link>
       </div>
       <div>
         <Checkbox class="my-ckb" v-model="enableContext">

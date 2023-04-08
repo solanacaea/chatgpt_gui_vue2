@@ -1,15 +1,14 @@
 <template>
 
-  <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
+  <div id="changeLayout" :class="['change-layout-wrapper', isMobile && 'mobile']">
     <div class="container">
-      <div class="user-layout-lang">
+      <div class="change-layout-lang">
       </div>
-      <div class="user-layout-content">
+      <div class="change-layout-content">
         <div class="top">
           <div class="header">
             <a href="/">
-              <img src="~@/assets/xa4.jpeg" class="logo" alt="logo">
-              <span class="title">小安智能助手</span>
+              <span class="title">密码修改</span>
             </a>
           </div>
           <div class="desc">
@@ -19,11 +18,6 @@
 
         <router-view />
 
-        <div class="footer">
-          <div class="copyright">
-            沪ICP备20005925号-1
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -33,19 +27,19 @@
 import { deviceMixin } from '@/store/device-mixin'
 
 export default {
-  name: 'UserLayout',
+  name: 'ChangeLayout',
   mixins: [deviceMixin],
   mounted () {
-    document.body.classList.add('userLayout')
+    document.body.classList.add('changeLayout')
   },
   beforeDestroy () {
-    document.body.classList.remove('userLayout')
+    document.body.classList.remove('changeLayout')
   }
 }
 </script>
 
 <style lang="less" scoped>
-#userLayout.user-layout-wrapper {
+#changeLayout.change-layout-wrapper {
   height: 100%;
 
   &.mobile {
@@ -65,7 +59,7 @@ export default {
     //padding: 50px 0 84px;
     position: relative;
 
-    .user-layout-lang {
+    .change-layout-lang {
       width: 100%;
       height: 40px;
       line-height: 44px;
@@ -83,7 +77,7 @@ export default {
       }
     }
 
-    .user-layout-content {
+    .change-layout-content {
       padding: 32px 0 24px;
 
       .top {
@@ -111,7 +105,7 @@ export default {
           }
 
           .title {
-            font-size: 33px;
+            font-size: 26px;
             color: rgba(0, 0, 0, .85);
             font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
             font-weight: 600;
