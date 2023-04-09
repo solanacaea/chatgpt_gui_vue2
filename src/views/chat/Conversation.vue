@@ -142,7 +142,7 @@ export default {
                       return;
                   }
                 })
-                // this.sendBtnDisable = false
+                this.sendBtnDisable = false
             }).catch(error => {
               console.log(error)
               this.questions.forEach((item)=>{
