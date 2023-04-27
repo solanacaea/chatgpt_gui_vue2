@@ -22,7 +22,14 @@ router.beforeEach((to, from, next) => {
       method: 'post'
     }).then((result) => {
       console.log('result', result)
-      next()
+      if (result.status == 'success') {
+        next()
+      } else {
+        storage.remove(ACCESS_TOKEN)
+        storage.remove(ACCESS_TOKEN_USER)
+        next({ path: loginRoutePath })
+        NProgress.done()
+      }
     }).catch(error => {
       console.log('error', error)
       storage.remove(ACCESS_TOKEN)
