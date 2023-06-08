@@ -217,6 +217,7 @@ export default {
     },
     loginSuccess (res, params) {
       storage.set(ACCESS_TOKEN_USER, params.username)
+      storage.set(ACCESS_TOKEN_TEMP, `${res.tokenType} ${res.accessToken}`, new Date().getTime() + 24 * 60 * 60 * 1000)
       if (res.message === 'expired') {
         // param: { username: params.username }
         storage.set(ACCESS_TOKEN_TEMP, `${res.tokenType} ${res.accessToken}`, new Date().getTime() + 24 * 60 * 60 * 1000)
